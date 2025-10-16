@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L, { LatLngExpression, LatLngBounds } from "leaflet";
+import { LatLngExpression } from "leaflet";
 import './BalloonMap.css'
 // Define type
 type Balloon = {

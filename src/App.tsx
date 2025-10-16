@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Map from './components/Map';
 import Slider from './components/Slider';
+import Meteo from './components/Meteo';
 import "./App.css";
 
 type Balloon = {
@@ -11,9 +12,15 @@ type Balloon = {
 
 const App: React.FC = () => {
   const [rand, setRand] = useState<number | null>(null);
+  const randRef = useRef(rand);
   const [data, setData] = useState<Balloon[] | null> (null);
   const [balloon, setBalloon] = useState<Balloon|null>(null);
   const [hour, setHour] = useState< number>(-1);
+
+  //change rand ref
+  useEffect(() => {
+    randRef.current = rand;
+  }, [rand]);
 
   // Generate initial random number
   useEffect(() => {
@@ -38,10 +45,6 @@ const App: React.FC = () => {
 
   // Hour changed so get new balloon values
   useEffect(() => {
-      if (rand === null){
-          console.log("rand not chosen");
-          return;
-      };
       const fetchBalloons = async () => {
         try {
           console.log("fetching hour %d", hour);
@@ -56,18 +59,18 @@ const App: React.FC = () => {
             lon: b[1],
             alt: b[2],
           }));
-          console.log(mapped[rand]);
+          console.log(mapped[randRef.current!]);
 
           setData(mapped);
-          setBalloon(mapped[rand]);
+          setBalloon(mapped[randRef.current!]);
         } catch (err) {
           console.error(err);
         }
       };
-  
-      // only fetch if rand is set
-      if (rand !== null) {
-        console.log(rand);
+      if (randRef.current === null){
+          console.log("rand not chosen");
+          return;
+      }else{
         fetchBalloons();
       };
     }, [hour]);
@@ -95,7 +98,8 @@ const App: React.FC = () => {
           </div>
       {/* Placeholder for other containers */}
         <div className="info-container">
-          <p>Other content goes here</p>
+          <p>Weather Info</p>
+          {balloon && (<Meteo lat = {balloon.lat} lon = {balloon.lon}/>)}
         </div>
     </div>
   );

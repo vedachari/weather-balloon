@@ -55,3 +55,5 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 everytime hour changes based on sliding bar: 
     fetch new hour
     display new lon and lat
+
+trying openmeteo for weather data

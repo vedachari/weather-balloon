@@ -1,7 +1,9 @@
 import express from "express";
 import fetch from "node-fetch";
 
+
 const app = express();
+app.use(express.json());
 
 app.get("/api/treasure/get/:id", async (req, res) => {
   var { id } = req.params;

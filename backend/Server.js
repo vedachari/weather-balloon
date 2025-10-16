@@ -4,7 +4,11 @@ import fetch from "node-fetch";
 const app = express();
 
 app.get("/api/treasure/get/:id", async (req, res) => {
-  const { id } = req.params;
+  var { id } = req.params;
+  if(id.length < 2){
+    id = "0" + id;
+    console.log('new id: ', id);
+  }
   try {
     const url = `https://a.windbornesystems.com/treasure/${id}.json`;
     console.log("Fetching:", url);
@@ -23,4 +27,4 @@ app.get("/api/treasure/get/:id", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("Proxy running on http://localhost:5001"));
+app.listen(5001, () => console.log("Proxy running on http://localhost:5001"));

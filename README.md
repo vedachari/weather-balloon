@@ -49,3 +49,9 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Return from fetch
 [[latitude, longitude, altitude]]
+
+## Notes
+
+everytime hour changes based on sliding bar: 
+    fetch new hour
+    display new lon and lat

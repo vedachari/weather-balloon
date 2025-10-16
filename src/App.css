@@ -1,3 +1,4 @@
+
 .App {
   text-align: center;
 }
@@ -40,4 +41,49 @@
 .map {
   height: 50%;
   width: 50%;
+}
+
+.page { 
+  background-color: #fff;
+}
+
+.button {
+  display: block;
+  text-align: center;
+}
+.generate-button  { 
+  margin: 0 auto;
+  padding: 8px 16px; 
+  text-align: center;
+}
+
+.map-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+  margin: 5px auto; 
+  height: 80vh;
+  width: 75vw;
+}
+
+
+.map { 
+  flex: 0 0 25%;
+  height: 75vh; 
+  width: 75vw; 
+  margin: 5px auto; 
+  border: 1px solid #ccc; 
+}
+
+.slider {
+  /* display: flex; */
+  padding-left: 10px;
+}
+
+.info-container { 
+  margin: 20px 5px;
+  flex: 1 1 auto; 
+  border: 2px solid #fff; 
 }

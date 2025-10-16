@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L, { LatLngExpression, LatLngBounds } from "leaflet";
-
+import './BalloonMap.css'
 // Define type
 type Balloon = {
   lat: number;
@@ -26,8 +26,8 @@ const BalloonMap: React.FC<{ balloon: Balloon | null}> = ({ balloon }) => {
     <MapContainer
       center={[balloon.lat, balloon.lon]}
       // center={[0, balloon.lon]}
+      className="map"
       zoom={2}
-      style={{ height: "50vh", width: "50vw" }}
       scrollWheelZoom={false}
     >
       {/* <FitBounds balloons={balloons} /> */}

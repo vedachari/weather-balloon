@@ -96,10 +96,9 @@ const App: React.FC = () => {
               hour = {hour}
               setHour = {setHour}/>
           </div>
-      {/* Placeholder for other containers */}
         <div className="info-container">
-          <p>Weather Info</p>
-          {balloon && (<Meteo lat = {balloon.lat} lon = {balloon.lon}/>)}
+          <h1>Weather Info</h1>
+          {balloon && (<Meteo lat = {balloon.lat} lon = {balloon.lon} hour = {hour}/>)}
         </div>
     </div>
   );

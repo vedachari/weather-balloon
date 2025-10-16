@@ -56,4 +56,4 @@ everytime hour changes based on sliding bar:
     fetch new hour
     display new lon and lat
 
-trying openmeteo for weather data
+trying openmeteo for weather data: worked

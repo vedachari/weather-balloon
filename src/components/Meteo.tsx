@@ -4,14 +4,16 @@ type MeteoProps = {
     weatherData: any;
     hour: number;
     alt: number;
+    rand: number
 }
 
-const Meteo: React.FC<MeteoProps> = ({weatherData, hour, alt}) => {
+const Meteo: React.FC<MeteoProps> = ({weatherData, hour, alt, rand}) => {
 
     if(!weatherData) return <p> Loading weather data</p>
     return (
     <div>
         {hour > 0 && (<h3>Balloon was here {hour } hours ago</h3>)}
+        <h3>Showing balloon {rand}</h3>
       <p>
         Coordinates: {weatherData.latitude.toFixed(2)}°,{" "}
         {weatherData.longitude.toFixed(2)}°

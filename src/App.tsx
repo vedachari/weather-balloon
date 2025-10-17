@@ -44,7 +44,8 @@ const App: React.FC = () => {
   // Log whenever rand changes
   useEffect(() => {
     console.log("Random index chosen:", rand);
-  }, [rand, allBalloons]);
+    setGetWeather(!getWeather);
+  }, [rand]);
 
   // Handler for "New Random Balloon" button
   const handleNewBalloon = () => {
@@ -170,10 +171,6 @@ const App: React.FC = () => {
                 console.error("Failed to fetch weather data:", error);
             }
         };
-        if(!getWeather){
-          console.log("get weather is false so not getting");
-          return;
-        }
         fetchWeather();
     }, [getWeather]);
 
@@ -206,7 +203,7 @@ const App: React.FC = () => {
           </div>
         <div className="info-container">
           <h1>Weather On Ground</h1>
-          {!allBalloons && balloon?.alt && (<Meteo weatherData = {weatherData} hour = {hour} alt = {balloon.alt}/>)}
+          {balloon?.alt && rand && (<Meteo weatherData = {weatherData} hour = {hour} alt = {balloon.alt} rand = {rand}/>)}
         </div>
     </div>
   );

@@ -20,7 +20,7 @@ type Balloon = {
 const App: React.FC = () => {
   //states
   const [allBalloons, setAllBalloons] = useState<boolean>(true); //currently viewing all balloons?
-  const [getWeather, setGetWeather] = useState<boolean>(false); //shoudl fetch weather for balloon
+  const [getWeather, setGetWeather] = useState<boolean>(false); //should fetch weather for balloon
   //data
   const [rand, setRand] = useState<number | null>(null);
   const randRef = useRef(rand);
@@ -34,18 +34,26 @@ const App: React.FC = () => {
     randRef.current = rand;
   }, [rand]);
 
-  // Generate initial random number
+  // Generate initial rand = 1
   useEffect(() => {
-    const r = Math.floor(Math.random() * 1000);
     setHour(0);
-    setRand(r);
+    setRand(1);
   }, []);
 
   // Log whenever rand changes
   useEffect(() => {
-    console.log("Random index chosen:", rand);
+    // console.log("Random index chosen:", rand);
     setGetWeather(!getWeather);
   }, [rand]);
+
+  useEffect(() => {
+    // setWeatherData(null);
+
+    // Update balloon reference
+    if (data && rand !== null) {
+      setBalloon(data[rand]);
+    }
+  }, [rand, data]);
 
   // Handler for "New Random Balloon" button
   const handleNewBalloon = () => {
@@ -54,7 +62,8 @@ const App: React.FC = () => {
     if (data){
       setBalloon(data[r]);
       setGetWeather(true);
-      console.log("Changed get weather to true");
+      // console.log("Changed get weather to true");
+      setWeatherData(null);
     };
     setAllBalloons(false);
     setRand(r);
@@ -62,7 +71,7 @@ const App: React.FC = () => {
 
   // Handler for "switch view" button
   const handleSwitchView = () => {
-    console.log('All balloons now ', !allBalloons);
+    // console.log('All balloons now ', !allBalloons);
     setAllBalloons(!allBalloons); //switch view
     if(weatherData == null){
       setGetWeather(true);
@@ -74,7 +83,10 @@ const App: React.FC = () => {
   useEffect(() => {
       const fetchBalloons = async () => {
         try {
-          console.log("fetching hour %d", hour);
+          if(hour > 24 || hour < 0){
+            return;
+          };
+          // console.log("fetching hour %d", hour);
           const res = await fetch(`/api/treasure/get/${hour}`);
           if (!res.ok){ 
             setHour(hour+1);
@@ -89,16 +101,16 @@ const App: React.FC = () => {
             lon: b[1],
             alt: b[2],
           }));
-          console.log(mapped[randRef.current!]);
+          // console.log(mapped[randRef.current!]);
 
           setData(mapped);
           setBalloon(mapped[randRef.current!]);
         } catch (err) {
-          console.error(err);
+          // console.error(err);
         }
       };
       if (randRef.current === null){
-          console.log("rand not chosen");
+          // console.log("rand not chosen");
           return;
       }else{
         fetchBalloons();
@@ -108,103 +120,140 @@ const App: React.FC = () => {
     // //get weather data: put here to all fewer times
     useEffect(() => {
         const fetchWeather = async () => {
-          console.log("getting weather");
+          // console.log("getting weather");
             if(balloon?.lat == null || balloon?.lon == null){
               return
             }
-            try{
-                const params = {
-                "latitude": balloon.lat,
-                "longitude": balloon.lon,
-                "daily": ["temperature_2m_max", "temperature_2m_min"],
-                "hourly": ["temperature_2m", "relative_humidity_2m", "precipitation_probability", "precipitation"],
-                "timezone": "auto",
-                "forecast_days": 1,
-            };
-            const url = "https://api.open-meteo.com/v1/forecast";
-            const responses = await fetchWeatherApi(url, params);
+            const maxRetries = 3;
+            const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-            const response = responses[0];
-            console.log('response',response);
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+              console.log('attempt # ', attempt)
+                try {
+                  const params = {
+                    latitude: balloon.lat,
+                    longitude: balloon.lon,
+                    daily: ["temperature_2m_max", "temperature_2m_min"],
+                    hourly: ["temperature_2m", "relative_humidity_2m", "precipitation_probability", "precipitation"],
+                    timezone: "auto",
+                    forecast_days: 1,
+                  };
+                  const url = "https://api.open-meteo.com/v1/forecast";
+                  const responses = await fetchWeatherApi(url, params);
 
-            // Attributes
-            const utcOffsetSeconds = response.utcOffsetSeconds();
+                  const response = responses[0];
+                  // console.log('response',response);
 
-            const hourly = response.hourly()!;
-            const daily = response.daily()!;
+                  // Attributes
+                  const utcOffsetSeconds = response.utcOffsetSeconds();
 
-            const data = {
-                latitude: response.latitude(),
-                longitude: response.longitude(),
-                elevation: response.elevation(),
-                utcOffsetSeconds: response.utcOffsetSeconds(),
-                timezone: response.timezone(),
-                timezone_abbreviation: response.timezoneAbbreviation(),
-                hourly: {
-                    time: [...Array((Number(hourly.timeEnd()) - Number(hourly.time())) / hourly.interval())].map(
-                        (_, i) => new Date((Number(hourly.time()) + i * hourly.interval() + utcOffsetSeconds) * 1000)
-                    ),
-                    temperature_2m: hourly.variables(0)!.valuesArray(),
-                    relative_humidity_2m: hourly.variables(1)!.valuesArray(),
-                    precipitation_probability: hourly.variables(2)!.valuesArray(),
-                    precipitation: hourly.variables(3)!.valuesArray(),
-                },
-                daily: {
-                    time: [...Array((Number(daily.timeEnd()) - Number(daily.time())) / daily.interval())].map(
-                        (_, i) => new Date((Number(daily.time()) + i * daily.interval() + utcOffsetSeconds) * 1000)
-                    ),
-                    temperature_2m_max: daily.variables(0)!.valuesArray(),
-                    temperature_2m_min: daily.variables(1)!.valuesArray(),
-                },
-            };
-            console.log(
-                `\nCoordinates: ${data.latitude}°N ${data.longitude}°E`,
-                `\nElevation: ${data.elevation}m asl`,
-                `\nTimezone difference to GMT+0: ${data.utcOffsetSeconds}s`,
-                `\nTimezone: ${data.timezone}s`,
-            );
-            console.log("\nHourly data", data.hourly)
-            console.log("\nDaily data", data.daily)
-            setWeatherData(data);
-            setGetWeather(false);
-            } catch (error) {
-                console.error("Failed to fetch weather data:", error);
+                  const hourly = response.hourly()!;
+                  const daily = response.daily()!;
+
+                  const data = {
+                      latitude: response.latitude(),
+                      longitude: response.longitude(),
+                      elevation: response.elevation(),
+                      utcOffsetSeconds: response.utcOffsetSeconds(),
+                      timezone: response.timezone(),
+                      timezone_abbreviation: response.timezoneAbbreviation(),
+                      hourly: {
+                          time: [...Array((Number(hourly.timeEnd()) - Number(hourly.time())) / hourly.interval())].map(
+                              (_, i) => new Date((Number(hourly.time()) + i * hourly.interval() + utcOffsetSeconds) * 1000)
+                          ),
+                          temperature_2m: hourly.variables(0)!.valuesArray(),
+                          relative_humidity_2m: hourly.variables(1)!.valuesArray(),
+                          precipitation_probability: hourly.variables(2)!.valuesArray(),
+                          precipitation: hourly.variables(3)!.valuesArray(),
+                      },
+                      daily: {
+                          time: [...Array((Number(daily.timeEnd()) - Number(daily.time())) / daily.interval())].map(
+                              (_, i) => new Date((Number(daily.time()) + i * daily.interval() + utcOffsetSeconds) * 1000)
+                          ),
+                          temperature_2m_max: daily.variables(0)!.valuesArray(),
+                          temperature_2m_min: daily.variables(1)!.valuesArray(),
+                      },
+                  };
+                  console.log(
+                      `\nCoordinates: ${data.latitude}°N ${data.longitude}°E`,
+                      `\nElevation: ${data.elevation}m asl`,
+                      `\nTimezone difference to GMT+0: ${data.utcOffsetSeconds}s`,
+                      `\nTimezone: ${data.timezone}s`,
+                  );
+                  // console.log("\nHourly data", data.hourly)
+                  // console.log("\nDaily data", data.daily)
+                  setWeatherData(data);
+                  setGetWeather(false);
+                  attempt = maxRetries;
+                } catch (error) {
+                    console.error("Failed to fetch weather data:", error);
+                    if (attempt < maxRetries) await wait(2000); // wait before retry
+                }
             }
         };
-        fetchWeather();
+        if(getWeather) fetchWeather();
     }, [getWeather]);
 
   return (
-    <div className="page">
-      {/* Button at the top */}
-      <div className="button">
-        <button onClick={handleNewBalloon} className="generate-button">
-          Show New Random Balloon
-        </button>
-        {allBalloons && (<button onClick={handleSwitchView} className="generate-button">
-          Show Balloon # {rand}
-        </button>)}
-        {!allBalloons && (<button onClick={handleSwitchView} className="generate-button">
-          Show all balloons
-        </button>)}
+    <div>
+      <div className="App-header">
+        <h1>View the WindBorne Systems Balloons</h1>
       </div>
+      <div >
+        <div className="contianer">
+          {/* Map container */}
+            <div className="map-container">
+                <div className="map">
+                  {data && (<Map rand={rand} allBalloons= {allBalloons} balloons={data}  setRand = {setRand} setWeatherData = {setWeatherData}/>)}
+                </div>
+                <div className="legend">
+                  <p className="link"><strong>Key:</strong></p>
+                  <p className="link"><span className="dot red"></span> Altitude under 10 km</p>
+                  <p className="link"><span className="dot black"></span> Altitude over 10 km</p>
+                </div>
+                <div className="legend-API">
+                  <p className="link"><strong>API Sources:</strong></p>
+                  <a href="https://windbornesystems.com" className="link">
+                      <strong>Windborne Systems</strong>
+                  </a>
+                  <a href="https://open-meteo.com"className="link">
+                       <strong>Open Meteo</strong>
+                  </a>
+                </div>
 
-      {/* Map container */}
-      <div className="map-container">
-          <div className="map">
-            {data && (<Map rand={rand} allBalloons= {allBalloons} balloons={data}  setRand = {setRand}/>)}
+            </div>
+            <div className="info-container">
+              {/* Button at the top */}
+              <div className="button">
+                <p>Choose a random balloon to see weather data!</p>
+                <button onClick={handleNewBalloon} className="generate-button">
+                  Show Random Balloon
+                </button>
+                <p>Click to show individual/all balloons.</p>
+                {allBalloons && (<button onClick={handleSwitchView} className="generate-button">
+                  Show Balloon # {rand}
+                </button>)}
+                {!allBalloons && (<button onClick={handleSwitchView} className="generate-button">
+                  Show all balloons
+                </button>)}
+              </div>
+              <div className="slider">
+                <Slider 
+                  hour = {hour}
+                  setHour = {setHour}/>
+              </div>
+              {weatherData && 
+                (<div>
+                  <h1>Weather On Ground</h1>
+                  <Meteo key = {rand} weatherData = {weatherData} hour = {hour} alt = {balloon?.alt} rand = {rand}/>
+                </div>)}
+              {!weatherData && rand !== null && rand > 1 &&(<div>
+                  <p>fetching data</p>
+                </div>)
+              }
+            </div>
           </div>
-          
       </div>
-      <div className="slider">
-            <Slider 
-              hour = {hour}
-              setHour = {setHour}/>
-          </div>
-        <div className="info-container">
-          <h1>Weather On Ground</h1>
-          {balloon?.alt && rand && (<Meteo weatherData = {weatherData} hour = {hour} alt = {balloon.alt} rand = {rand}/>)}
-        </div>
     </div>
   );
 };

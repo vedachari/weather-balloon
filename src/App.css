@@ -8,6 +8,13 @@
   pointer-events: none;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #fff;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -16,12 +23,12 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(2vmin);
   color: white;
 }
 
@@ -45,34 +52,59 @@
 
 .page { 
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contianer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0 24px;
 }
 
 .button {
-  display: block;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 0 24px;
 }
 .generate-button  { 
   margin: 0 auto;
-  padding: 8px 16px; 
-  text-align: center;
+  padding: 12px 24px; /* increase padding for bigger buttons */
+  font-size: 1.2rem;  /* larger text */
+  min-width: 150px;   /* optional: ensure minimum width */
+  height: 50px;       /* optional: fixed height */
+  border-radius: 8px; /* optional: rounded corners */
+  background-color: #1d16f5;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.generate-button:hover {
+  background-color: #421d92;
 }
 
 .map-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  /* justify-content: center; */
   gap: 16px;
   flex: 1;
   margin: 5px auto; 
-  height: 80vh;
-  width: 75vw;
+  width: 60vw;
 }
 
 
 .map { 
   flex: 0 0 25%;
-  height: 75vh; 
-  width: 75vw; 
+  height: 60vh; 
+  width: 60vw; 
   margin: 5px auto; 
   border: 1px solid #ccc; 
 }
@@ -86,4 +118,58 @@
   margin: 20px 5px;
   flex: 1 1 auto; 
   border: 2px solid #fff; 
+  background-color: #474748;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px; 
+  margin: 16px 0 0;
+  padding: 10px;
+  /* font-size: 14px; */
+  border: 2px solid #fff; 
+  background-color: #474748;
+}
+
+
+.legend-API {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px; 
+  margin: 16px 0 0;
+  padding: 10px;
+  border: 2px solid #fff; 
+  background-color: #474748;
+  color: #ffffff;
+}
+
+.link{
+  margin: 2px;
+  color:#1d16f5;
+  font-size: 2rem;
+}
+
+.link :visited{
+  color:#100f40;
+  font-size: 2rem;
+}
+
+.legend .dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legend .red {
+  background-color: red;
+}
+
+.legend .black {
+  background-color: black;
 }

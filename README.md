@@ -59,5 +59,4 @@ everytime hour changes based on sliding bar:
 trying openmeteo for weather data: worked
 
 features:
-altitude bar
 view all balloons: choose specific balloon or randomly look at one

@@ -13,6 +13,7 @@ type Balloon = {
 type BalloonMapProps ={ 
   balloons: Balloon[] | null;
   setRand: any;
+  setWeatherData: any;
 }
 
 const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
@@ -22,9 +23,9 @@ const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
 };
 
 
-const BalloonMap: React.FC<BalloonMapProps> = ({ balloons, setRand }) => {
+const BalloonMap: React.FC<BalloonMapProps> = ({ balloons, setRand, setWeatherData }) => {
   if(!balloons) return null;
-  console.log("Balloon received:", balloons);
+  // console.log("Balloon received:", balloons);
 
 
   return (
@@ -47,18 +48,23 @@ const BalloonMap: React.FC<BalloonMapProps> = ({ balloons, setRand }) => {
           <CircleMarker
             center={[balloon.lat, balloon.lon]}
             radius={Math.max(3, balloon.alt / 10)} // scale radius by altitude
-            color={balloons.length === 1 ? "black":(balloon.alt > 10 ? "black" : "red")}
+            color={balloon.alt > 10 ? "black" : "red"}
             fillOpacity={0.8}
             eventHandlers={{
               click: () => {
-                setRand(index);
+                if(balloons.length>1){
+                  setRand(index);
+                  setWeatherData(null);
+                };
               },
             }}
           >
-            <Popup >{`Balloon: ${index} | Alt: ${balloon.alt} km`}</Popup>
+            {balloons.length === 1 && (<Popup >{`Alt: ${balloon.alt} km`}</Popup>)}
+            {balloons.length > 1 && (<Popup >{`Balloon: ${index} | Alt: ${balloon.alt} km`}</Popup>)}
           </CircleMarker>
 
           {balloons.length === 1 && (<Recenter position={[balloon.lat, balloon.lon]} />)}
+          {balloons.length > 1 && (<Recenter position={[0,0]} />)}
         </div>
       ))}
     </MapContainer>

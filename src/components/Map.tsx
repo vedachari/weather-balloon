@@ -12,19 +12,20 @@ type MapProps = {
   allBalloons: boolean;
   balloons: Balloon[];
   setRand: any;
+  setWeatherData: any;
 }
 
-const Map: React.FC<MapProps> = ( {rand, allBalloons, balloons, setRand} ) => {
+const Map: React.FC<MapProps> = ( {rand, allBalloons, balloons, setRand, setWeatherData} ) => {
   if(allBalloons){
     return (
       <div>
-        <BalloonMap balloons={balloons} setRand = {setRand}/>
+        <BalloonMap balloons={balloons} setRand = {setRand} setWeatherData={setWeatherData}/>
       </div>
     );
   }
   return (
       <div>
-        <BalloonMap balloons={[balloons[rand!]]} setRand = {null}/>
+        <BalloonMap balloons={[balloons[rand!]]} setRand = {null} setWeatherData={setWeatherData}/>
       </div>
     );
 };

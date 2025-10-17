@@ -195,7 +195,7 @@ const App: React.FC = () => {
       {/* Map container */}
       <div className="map-container">
           <div className="map">
-            {data && (<Map rand={rand} allBalloons= {allBalloons} balloons={data}/>)}
+            {data && (<Map rand={rand} allBalloons= {allBalloons} balloons={data}  setRand = {setRand}/>)}
           </div>
           
       </div>
@@ -205,8 +205,8 @@ const App: React.FC = () => {
               setHour = {setHour}/>
           </div>
         <div className="info-container">
-          <h1>Weather Info</h1>
-          {!allBalloons && (<Meteo weatherData = {weatherData} hour = {hour}/>)}
+          <h1>Weather On Ground</h1>
+          {!allBalloons && balloon?.alt && (<Meteo weatherData = {weatherData} hour = {hour} alt = {balloon.alt}/>)}
         </div>
     </div>
   );

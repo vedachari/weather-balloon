@@ -12,6 +12,7 @@ type Balloon = {
 
 type BalloonMapProps ={ 
   balloons: Balloon[] | null;
+  setRand: any;
 }
 
 const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
@@ -20,8 +21,20 @@ const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
   return null;
 };
 
+const Click: React.FC<{ position: LatLngExpression, index: number, setRand: any}> = ({ position, index, setRand}) => {
+  const map = useMap();
+  map.on('click', function(ev) {
+    console.log('clicked!'); // ev is an event object (MouseEvent in this case)
+    if(ev.latlng === position){
+      console.log(' setting rand to ', index);
+      setRand(index);
+    };
+  });
+  return null;
+};
 
-const BalloonMap: React.FC<BalloonMapProps> = ({ balloons }) => {
+
+const BalloonMap: React.FC<BalloonMapProps> = ({ balloons, setRand }) => {
   if(!balloons) return null;
   console.log("Balloon received:", balloons);
 
@@ -45,15 +58,15 @@ const BalloonMap: React.FC<BalloonMapProps> = ({ balloons }) => {
         <div key={index}>
           <CircleMarker
             center={[balloon.lat, balloon.lon]}
-            radius={5}
-            color="red"
-            fillColor="red"
+            radius={Math.max(3, balloon.alt / 10)} // scale radius by altitude
+            color={balloons.length === 1 ? "black":(balloon.alt > 10 ? "black" : "red")}
             fillOpacity={0.8}
           >
-            <Popup >{`Alt: ${balloon.alt} m`}</Popup>
+            <Popup >{`Alt: ${balloon.alt} km`}</Popup>
           </CircleMarker>
 
-          {balloons.length == 1 && (<Recenter position={[balloon.lat, balloon.lon]} />)}
+          {balloons.length === 1 && (<Recenter position={[balloon.lat, balloon.lon]} />)}
+          {/* {setRand  && (<Click position={[balloon.lat, balloon.lon]} index = {index} setRand = {setRand}/>)} */}
         </div>
       ))}
     </MapContainer>

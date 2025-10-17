@@ -10,6 +10,10 @@ type Balloon = {
   alt: number;
 };
 
+type BalloonMapProps ={ 
+  balloons: Balloon[] | null;
+}
+
 const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
   const map = useMap();
   map.setView(position, map.getZoom());
@@ -17,14 +21,14 @@ const Recenter: React.FC<{ position: LatLngExpression }> = ({ position }) => {
 };
 
 
-const BalloonMap: React.FC<{ balloon: Balloon | null}> = ({ balloon }) => {
-  if(!balloon) return null;
-  console.log("Balloon received:", balloon);
+const BalloonMap: React.FC<BalloonMapProps> = ({ balloons }) => {
+  if(!balloons) return null;
+  console.log("Balloon received:", balloons);
 
 
   return (
     <MapContainer
-      center={[balloon.lat, balloon.lon]}
+      center={[0,0]}
       // center={[0, balloon.lon]}
       className="map"
       zoom={2}
@@ -37,17 +41,21 @@ const BalloonMap: React.FC<{ balloon: Balloon | null}> = ({ balloon }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       />
 
-        <CircleMarker
-          key={balloon.alt}
-          center={[balloon.lat, balloon.lon]}
-          radius={5}
-          color="red"
-          fillColor="red"
-          fillOpacity={0.8}
-        >
-          <Popup>{balloon.alt || `Balloon ${balloon.alt + 1}`}</Popup>
-        </CircleMarker>
-        <Recenter position = {[balloon.lat, balloon.lon]}/>
+      {balloons.map((balloon, index) => (
+        <div key={index}>
+          <CircleMarker
+            center={[balloon.lat, balloon.lon]}
+            radius={5}
+            color="red"
+            fillColor="red"
+            fillOpacity={0.8}
+          >
+            <Popup >{`Alt: ${balloon.alt} m`}</Popup>
+          </CircleMarker>
+
+          {balloons.length == 1 && (<Recenter position={[balloon.lat, balloon.lon]} />)}
+        </div>
+      ))}
     </MapContainer>
   );
 };

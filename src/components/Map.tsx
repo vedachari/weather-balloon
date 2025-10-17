@@ -7,12 +7,25 @@ type Balloon = {
   alt: number;
 };
 
-const Map: React.FC<Balloon> = ( balloon ) => {
+type MapProps = {
+  rand: number | null;
+  allBalloons: boolean;
+  balloons: Balloon[];
+}
+
+const Map: React.FC<MapProps> = ( {rand, allBalloons, balloons} ) => {
+  if(allBalloons){
+    return (
+      <div>
+        <BalloonMap balloons={balloons}/>
+      </div>
+    );
+  }
   return (
-    <div>
-      <BalloonMap balloon={balloon} />
-    </div>
-  );
+      <div>
+        <BalloonMap balloons={[balloons[rand!]]}/>
+      </div>
+    );
 };
 
 export default Map;

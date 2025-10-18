@@ -32,7 +32,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node ./backend/server.js"
+    "server": "node ../backend/server.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build --no-history"
   },
   "eslintConfig": {
     "extends": [
@@ -54,7 +56,8 @@
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.21",
-    "@types/node-fetch": "^2.6.13"
+    "@types/node-fetch": "^2.6.13",
+    "gh-pages": "^6.3.0"
   },
-  "proxy": "http://localhost:5001"
+  "homepage": "https://vedachari.github.io/weather-balloon"
 }

@@ -1,9 +1,12 @@
 import express from "express";
 import fetch from "node-fetch";
-
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+  origin: ["http://localhost:3000", "https://vedachari.github.io"]
+}));
 
 app.get("/api/treasure/get/:id", async (req, res) => {
   var { id } = req.params;

@@ -29,4 +29,5 @@ app.get("/api/treasure/get/:id", async (req, res) => {
   }
 });
 
-app.listen(5001, () => console.log("Proxy running on http://localhost:5001"));
+const PORT = process.env.PORT || 5001; // fallback for local dev
+app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));

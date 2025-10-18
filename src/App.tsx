@@ -12,6 +12,8 @@ type Balloon = {
   alt: number;
 };
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+
 /*basic flow
 - get hour 0 and display all
 - if user enters balloon/ generates random number: switch to single balloon
@@ -88,7 +90,7 @@ const App: React.FC = () => {
             return;
           };
           // console.log("fetching hour %d", hour);
-          const res = await fetch(`/api/treasure/get/${hour}`);
+          const res = await fetch(`${API_URL}/api/treasure/get/${hour}`);
           if (!res.ok){ 
             setHour(hour+1);
             throw new Error("Failed to fetch data");

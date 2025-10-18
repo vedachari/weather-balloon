@@ -1,0 +1,34 @@
+.balloons-container {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  width: 100%;
+  height: 120px;
+  position: relative;
+}
+
+.balloon {
+  width: 80px;
+  animation: floatUpDown ease-in-out infinite alternate;
+}
+
+/* vertical up-and-down floating */
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0); } 
+}
+
+/* Different speeds and start delays for variety */
+.balloon:nth-child(1) { animation-duration: 5s, 2s; animation-delay: 0s, 0s; }
+.balloon:nth-child(2) { animation-duration: 6s, 2.5s; animation-delay: 1s, 0s; }
+.balloon:nth-child(3) { animation-duration: 5.5s, 2.2s; animation-delay: 0.5s, 0s; }
+.balloon:nth-child(4) { animation-duration: 6.5s, 2.8s; animation-delay: 1.5s, 0s; }
+.balloon:nth-child(5) { animation-duration: 7s, 3s; animation-delay: 0.8s, 0s; }
+.balloon:nth-child(6) { animation-duration: 5s, 2s; animation-delay: 0s, 0s; }
+.balloon:nth-child(7) { animation-duration: 6s, 2.5s; animation-delay: 1s, 0s; }
+.balloon:nth-child(8) { animation-duration: 5.5s, 2.2s; animation-delay: 0.5s, 0s; }
+.balloon:nth-child(9) { animation-duration: 6.5s, 2.8s; animation-delay: 1.5s, 0s; }
+.balloon:nth-child(10) { animation-duration: 7s, 3s; animation-delay: 0.8s, 0s; }
+.balloon:nth-child(11) { animation-duration: 5s, 2s; animation-delay: 0s, 0s; }
+.balloon:nth-child(12) { animation-duration: 6s, 2.5s; animation-delay: 1s, 0s; }

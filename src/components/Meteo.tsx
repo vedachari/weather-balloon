@@ -26,7 +26,7 @@ const Meteo: React.FC<MeteoProps> = ({weatherData, hour, alt, rand}) => {
         {Math.floor(weatherData.utcOffsetSeconds / 3600)}:
         {String(Math.abs((weatherData.utcOffsetSeconds % 3600) / 60)).padStart(2, "0")} hours
       </p>
-      <p><strong>Temperature:</strong> {weatherData.hourly.temperature_2m?.[23-hour]} °C</p>
+      <p><strong>Temperature (2m off the ground):</strong> {weatherData.hourly.temperature_2m?.[23-hour]} °C</p>
       <p><strong>Chance of Precipitation:</strong> {weatherData.hourly.precipitation_probability?.[23-hour]}%</p>
       <p><strong>Relative Humidity:</strong> {weatherData.hourly.relative_humidity_2m?.[23-hour]}%</p>
     </div>

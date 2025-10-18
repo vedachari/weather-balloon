@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Map from './components/Map';
 import Slider from './components/Slider';
 import Meteo from './components/Meteo';
+import Balloon from "./components/Balloon";
 import { fetchWeatherApi } from 'openmeteo';
 import "./App.css";
 
@@ -196,8 +197,10 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <div className="App-header">
-        <h1>View the WindBorne Systems Balloons</h1>
+        <div className="App-header">
+          <p style={{ textAlign: 'left' , fontSize: '0.75rem'}}>Note: Actual Windborne balloons do not look like this.</p>
+          <Balloon/>
+        <h1 style={{ textAlign: 'center' }}>View the WindBorne Systems Balloons</h1>
       </div>
       <div >
         <div className="contianer">
@@ -225,7 +228,7 @@ const App: React.FC = () => {
             <div className="info-container">
               {/* Button at the top */}
               <div className="button">
-                <p>Choose a random balloon to see weather data!</p>
+                <p>Choose a random balloon, or click a balloon on the map, to see weather data!</p>
                 <button onClick={handleNewBalloon} className="generate-button">
                   Show Random Balloon
                 </button>
@@ -248,7 +251,7 @@ const App: React.FC = () => {
                   <Meteo key = {rand} weatherData = {weatherData} hour = {hour} alt = {balloon?.alt} rand = {rand}/>
                 </div>)}
               {!weatherData && rand !== null && rand > 1 &&(<div>
-                  <p>fetching data</p>
+                  <Balloon/>
                 </div>)
               }
             </div>

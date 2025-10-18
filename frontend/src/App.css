@@ -118,7 +118,7 @@ html, body {
   margin: 20px 5px;
   flex: 1 1 auto; 
   border: 2px solid #fff; 
-  background-color: #474748;
+  background-color: #fff;
 }
 
 .legend {
@@ -130,7 +130,7 @@ html, body {
   padding: 10px;
   /* font-size: 14px; */
   border: 2px solid #fff; 
-  background-color: #474748;
+  background-color: #fff;
 }
 
 
@@ -142,7 +142,7 @@ html, body {
   margin: 16px 0 0;
   padding: 10px;
   border: 2px solid #fff; 
-  background-color: #474748;
+  background-color: #fff;
   color: #ffffff;
 }
 

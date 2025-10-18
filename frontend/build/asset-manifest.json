@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/weather-balloon/static/css/main.5b50b691.css",
+    "main.js": "/weather-balloon/static/js/main.049b8e2d.js",
+    "static/js/453.117b0875.chunk.js": "/weather-balloon/static/js/453.117b0875.chunk.js",
+    "static/media/hot-air-balloon-clip-art-balloon-png": "/weather-balloon/static/media/hot-air-balloon-clip-art-balloon-c4b929081467b61f7a2c50f8056ab377.5ce88100e0580b181940.png",
+    "index.html": "/weather-balloon/index.html",
+    "main.5b50b691.css.map": "/weather-balloon/static/css/main.5b50b691.css.map",
+    "main.049b8e2d.js.map": "/weather-balloon/static/js/main.049b8e2d.js.map",
+    "453.117b0875.chunk.js.map": "/weather-balloon/static/js/453.117b0875.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5b50b691.css",
+    "static/js/main.049b8e2d.js"
+  ]
+}

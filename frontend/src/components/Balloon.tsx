@@ -11,12 +11,6 @@ const BalloonStream: React.FC = () => {
         <img src={balloon} alt="Balloon" className="balloon" />
         <img src={balloon} alt="Balloon" className="balloon" />
         <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
-        <img src={balloon} alt="Balloon" className="balloon" />
     </div>
 
 

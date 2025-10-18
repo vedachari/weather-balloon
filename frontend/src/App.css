@@ -75,9 +75,9 @@ html, body {
 .generate-button  { 
   margin: 0 auto;
   padding: 12px 24px; /* increase padding for bigger buttons */
-  font-size: 1.2rem;  /* larger text */
+  font-size: 1rem;  /* larger text */
   min-width: 150px;   /* optional: ensure minimum width */
-  height: 50px;       /* optional: fixed height */
+  /* height: 50px;       optional: fixed height */
   border-radius: 8px; /* optional: rounded corners */
   background-color: #1d16f5;
   color: white;
@@ -112,6 +112,7 @@ html, body {
 .slider {
   /* display: flex; */
   padding-left: 10px;
+  justify-content: center;
 }
 
 .info-container { 
@@ -149,12 +150,12 @@ html, body {
 .link{
   margin: 2px;
   color:#1d16f5;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .link :visited{
-  color:#100f40;
-  font-size: 2rem;
+  color:#1d16f5;
+  font-size: 1.5rem;
 }
 
 .legend .dot {
